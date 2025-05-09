@@ -15,7 +15,6 @@ import java.util.List;
 public class MyBookingsGUI extends JFrame implements ActionListener {
     private JPanel centerPane;
     private JTable bookingsTable;
-    private JButton viewDetailsBtn;
     private JButton modifyBookingBtn;
     private JButton cancelBookingBtn;
     private JButton backBtn;
@@ -27,13 +26,28 @@ public class MyBookingsGUI extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 600);
         setLocationRelativeTo(null);
-        centerPane = new JPanel();
-        centerPane.setLayout(new BorderLayout(10, 10));
+        centerPane = new JPanel(new BorderLayout(10, 10));
         centerPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JLabel titleLabel = new JLabel("My Bookings", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         centerPane.add(titleLabel, BorderLayout.NORTH);
-        // Create table
+        setupTable();
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        modifyBookingBtn = new JButton("Modify Booking");
+        cancelBookingBtn = new JButton("Cancel Booking");
+        backBtn = new JButton("Back");
+        modifyBookingBtn.addActionListener(this);
+        cancelBookingBtn.addActionListener(this);
+        backBtn.addActionListener(this);
+        buttonPanel.add(modifyBookingBtn);
+        buttonPanel.add(cancelBookingBtn);
+        buttonPanel.add(backBtn);
+        centerPane.add(buttonPanel, BorderLayout.SOUTH);
+        add(centerPane);
+        loadAllBookings();
+    }
+    
+    private void setupTable() {
         String[] columns = {"Booking ID", "Car", "Start Date", "End Date", "Total Cost", "Status"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
@@ -45,32 +59,15 @@ public class MyBookingsGUI extends JFrame implements ActionListener {
         JScrollPane scrollPane = new JScrollPane(bookingsTable);
         bookingsTable.setFillsViewportHeight(true);
         bookingsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        viewDetailsBtn = new JButton("View Details");
-        modifyBookingBtn = new JButton("Modify Booking");
-        cancelBookingBtn = new JButton("Cancel Booking");
-        backBtn = new JButton("Back");
-        viewDetailsBtn.addActionListener(this);
-        modifyBookingBtn.addActionListener(this);
-        cancelBookingBtn.addActionListener(this);
-        backBtn.addActionListener(this);
-        buttonPanel.add(viewDetailsBtn);
-        buttonPanel.add(modifyBookingBtn);
-        buttonPanel.add(cancelBookingBtn);
-        buttonPanel.add(backBtn);
         centerPane.add(scrollPane, BorderLayout.CENTER);
-        centerPane.add(buttonPanel, BorderLayout.SOUTH);
-        add(centerPane);
-        // Dummy user ID
-        loadBookings("123");
     }
     
-    public void loadBookings(String userId) {
+    public void loadAllBookings() {
         tableModel.setRowCount(0);
-        bookingList = BookingDataController.getInstance().getBookingsByUser(userId);
+        bookingList = BookingDataController.getInstance().getAllBookings();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (Booking booking : bookingList) {
-            Car car = CarDataController.getInstance().getCarById(booking.getCarId());
+            Car car = CarDataController.getInstance().getCarByLicensePlate(booking.getLicensePlate());
             String carName = "Unknown";
             if (car != null) {
                 carName = car.getMake() + " " + car.getModel();
@@ -98,9 +95,7 @@ public class MyBookingsGUI extends JFrame implements ActionListener {
             boolean success = BookingDataController.getInstance().cancelBooking(bookingId);
             if (success) {
                 JOptionPane.showMessageDialog(this, "Booking cancelled successfully!");
-                loadBookings("123");
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to cancel booking. Please try again.");
+                loadAllBookings();
             }
         }
     }
@@ -108,13 +103,7 @@ public class MyBookingsGUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         int selectedRow = bookingsTable.getSelectedRow();
-        if (e.getSource() == viewDetailsBtn) {
-            if (selectedRow != -1) {
-                JOptionPane.showMessageDialog(this, "Booking details would be shown here");
-            } else {
-                JOptionPane.showMessageDialog(this, "Please select a booking first");
-            }
-        } else if (e.getSource() == modifyBookingBtn) {
+        if (e.getSource() == modifyBookingBtn) {
             if (selectedRow != -1) {
                 int bookingId = (int) tableModel.getValueAt(selectedRow, 0);
                 ModifyBookingGUI modifyGUI = new ModifyBookingGUI();
