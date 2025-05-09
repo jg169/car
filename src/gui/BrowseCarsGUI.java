@@ -2,7 +2,7 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import controller.CarDataController;
+//import controller.CarDataController;
 import model.Car;
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -3,7 +3,7 @@ package gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import controller.RenterDataController;
-import controller.CarDataController;
+//import controller.CarDataController;
 import model.Booking;
 import model.Car;
 import java.awt.*;
