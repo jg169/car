@@ -3,19 +3,19 @@ package controller;
 import java.io.*;
 import java.util.*;
 import model.Car;
+import model.Booking;
 
 public class CarDataController {
     private static CarDataController instance;
     private List<Car> cars;
     private static final String CAR_FILE = "cars.dat";
 
-    // Singleton
+    // singleton constructor
     private CarDataController() {
         cars = new ArrayList<>();
         loadCars();
     }
 
-    // Singleton getInstance method
     public static CarDataController getInstance() {
         if (instance == null) {
             instance = new CarDataController();
@@ -23,7 +23,6 @@ public class CarDataController {
         return instance;
     }
 
-    // Load cars from file
     private void loadCars() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(CAR_FILE))) {
             cars = (List<Car>) ois.readObject();
@@ -33,7 +32,6 @@ public class CarDataController {
         }
     }
 
-    // Save cars to file
     private void saveCars() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(CAR_FILE))) {
             oos.writeObject(cars);
@@ -42,56 +40,21 @@ public class CarDataController {
         }
     }
 
-    // Get all cars
     public List<Car> getAllCars() {
         return cars;
     }
 
-    // Get car by ID
-    public Car getCarById(String carId) {
+    public Car getCarByLicensePlate(String licensePlate) {
         for (Car car : cars) {
-            if (car.getCarId().equals(carId)) {
+            if (car.getLicensePlate().equals(licensePlate)) {
                 return car;
             }
         }
         return null;
     }
 
-    // Add car (this should be done on the admin side i just made what it could look like)
-    public boolean addCar(Car car) {
-        if (getCarById(car.getCarId()) != null) {
-            return false;
-        }
-        cars.add(car);
-        saveCars();
-        return true;
-    }
 
-    // Update car (same as above)
-    public boolean updateCar(Car car) {
-        for (int i = 0; i < cars.size(); i++) {
-            if (cars.get(i).getCarId().equals(car.getCarId())) {
-                cars.set(i, car);
-                saveCars();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Delete car (same as above)
-    public boolean deleteCar(String carId) {
-        for (int i = 0; i < cars.size(); i++) {
-            if (cars.get(i).getCarId().equals(carId)) {
-                cars.remove(i);
-                saveCars();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Allows searching for cars based off of a particular filter, i.e. make and model
+    // Allows searching for cars based off of a particular filter like type, model, etc.
     public List<Car> getCarsByFilter(Map<String, Object> filter) {
         List<Car> filteredCars = new ArrayList<>();
         for (Car car : cars) {
@@ -122,8 +85,19 @@ public class CarDataController {
     }
     
     // Checks car availability for specific dates
-    public boolean checkAvailability(String carId, Date startDate, Date endDate) {
-        Car car = getCarById(carId);
+    public boolean checkAvailability(String licensePlate, Date startDate, Date endDate) {
+        Car car = getCarByLicensePlate(licensePlate);
         return car != null && car.getAvailability().equals("Available");
+    }
+    
+    public List<Booking> getBookingsForCar(String licensePlate) {
+        List<Booking> allBookings = BookingDataController.getInstance().getAllBookings();
+        List<Booking> carBookings = new ArrayList<>();
+        for (Booking booking : allBookings) {
+            if (booking.getLicensePlate().equals(licensePlate)) {
+                carBookings.add(booking);
+            }
+        }
+        return carBookings;
     }
 }

@@ -12,9 +12,8 @@ import java.util.List;
 public class BrowseCarsGUI extends JFrame implements ActionListener {
     private JPanel centerPane;
     private JTable carListTable;
-    private JButton viewDetailsBtn;
-    private JButton backBtn;
     private JButton bookCarBtn;
+    private JButton backBtn;
     private DefaultTableModel tableModel;
     private List<Car> carList;
 
@@ -29,7 +28,7 @@ public class BrowseCarsGUI extends JFrame implements ActionListener {
         JLabel titleLabel = new JLabel("Available Cars", JLabel.CENTER);
         centerPane.add(titleLabel, BorderLayout.NORTH);
         // Create table model with columns
-        String[] columns = {"Car ID", "Make", "Model", "Type", "Price per Day", "Availability"};
+        String[] columns = {"License Plate", "Make", "Model", "Type", "Price per Day", "Availability"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -42,13 +41,10 @@ public class BrowseCarsGUI extends JFrame implements ActionListener {
         carListTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // Create the button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        viewDetailsBtn = new JButton("View Details");
         bookCarBtn = new JButton("Book Selected Car");
         backBtn = new JButton("Back");
-        viewDetailsBtn.addActionListener(this);
         bookCarBtn.addActionListener(this);
         backBtn.addActionListener(this);
-        buttonPanel.add(viewDetailsBtn);
         buttonPanel.add(bookCarBtn);
         buttonPanel.add(backBtn);
         centerPane.add(scrollPane, BorderLayout.CENTER);
@@ -63,7 +59,7 @@ public class BrowseCarsGUI extends JFrame implements ActionListener {
         carList = CarDataController.getInstance().getAllCars();
         for (Car car : carList) {
             Object[] row = {
-                car.getCarId(),
+                car.getLicensePlate(),
                 car.getMake(),
                 car.getModel(),
                 car.getType(),
@@ -76,22 +72,12 @@ public class BrowseCarsGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == viewDetailsBtn) {
+        if (e.getSource() == bookCarBtn) {
             int selectedRow = carListTable.getSelectedRow();
             if (selectedRow != -1) {
-                String carId = (String) tableModel.getValueAt(selectedRow, 0);
-                CarDetailsGUI detailsGUI = new CarDetailsGUI();
-                detailsGUI.displayGUI(carId);
-                this.setVisible(false);
-            } else {
-                JOptionPane.showMessageDialog(this, "Please select a car first");
-            }
-        } else if (e.getSource() == bookCarBtn) {
-            int selectedRow = carListTable.getSelectedRow();
-            if (selectedRow != -1) {
-                String carId = (String) tableModel.getValueAt(selectedRow, 0);
+                String licensePlate = (String) tableModel.getValueAt(selectedRow, 0);
                 BookCarGUI bookCarGUI = new BookCarGUI();
-                bookCarGUI.displayGUI(carId);
+                bookCarGUI.displayGUI(licensePlate);
                 this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(this, "Please select a car first");

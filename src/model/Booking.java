@@ -5,8 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Booking {
     private int bookingId;
-    private String carId;
-    private String userId;
+    private String licensePlate;
     private Date startDate;
     private Date endDate;
     // Would be either "Pending", "Approved", "Rejected", "Completed", "Cancelled"
@@ -14,11 +13,10 @@ public class Booking {
     private double totalCost;
 
     // Constructor
-    public Booking(int bookingId, String carId, String userId, 
+    public Booking(int bookingId, String licensePlate, 
                   Date startDate, Date endDate, String status, double totalCost) {
         this.bookingId = bookingId;
-        this.carId = carId;
-        this.userId = userId;
+        this.licensePlate = licensePlate;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
@@ -28,10 +26,8 @@ public class Booking {
     // Getters and setters
     public int getBookingId() { return bookingId; }
     public void setBookingId(int bookingId) { this.bookingId = bookingId; }
-    public String getCarId() { return carId; }
-    public void setCarId(String carId) { this.carId = carId; }
-    public String getUserId() { return userId; }
-    public void setUserId(String userId) { this.userId = userId; }
+    public String getLicensePlate() { return licensePlate; }
+    public void setLicensePlate(String licensePlate) { this.licensePlate = licensePlate; }
     public Date getStartDate() { return startDate; }
     public void setStartDate(Date startDate) { this.startDate = startDate; }
     public Date getEndDate() { return endDate; }
@@ -41,9 +37,4 @@ public class Booking {
     public double getTotalCost() { return totalCost; }
     public void setTotalCost(double totalCost) { this.totalCost = totalCost; }
 
-    // Calculate duration in days
-    public int calculateDuration() {
-        long diffInMillies = Math.abs(endDate.getTime() - startDate.getTime());
-        return (int) TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-    }
 }

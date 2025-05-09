@@ -10,9 +10,9 @@ import java.awt.event.ActionListener;
 public class CarDetailsGUI extends JFrame implements ActionListener {
     private JPanel centerPane;
     private JPanel specificationPanel;
-    private JButton bookCarBtn;
     private JButton backBtn;
-    private String currentCarId;
+    private JButton bookCarBtn;
+    private String currentLicensePlate;
 
     public CarDetailsGUI() {
         setTitle("Car Details");
@@ -41,22 +41,20 @@ public class CarDetailsGUI extends JFrame implements ActionListener {
         add(centerPane);
     }
 
-    public void loadCarDetails(String carId) {
-        currentCarId = carId;
-        Car car = CarDataController.getInstance().getCarById(carId);
+    public void loadCarDetails(String licensePlate) {
+        currentLicensePlate = licensePlate;
+        Car car = CarDataController.getInstance().getCarByLicensePlate(licensePlate);
         if (car != null) {
             setTitle("Car Details - " + car.getMake() + " " + car.getModel());
             specificationPanel.removeAll();
             JPanel detailsPanel = new JPanel(new GridLayout(0, 2, 10, 10));
-            addDetail(detailsPanel, "Car ID:", car.getCarId());
+            addDetail(detailsPanel, "License Plate:", car.getLicensePlate());
             addDetail(detailsPanel, "Make:", car.getMake());
             addDetail(detailsPanel, "Model:", car.getModel());
             addDetail(detailsPanel, "Type:", car.getType());
-            addDetail(detailsPanel, "License Plate:", car.getLicensePlate());
             addDetail(detailsPanel, "Price Per Day:", "$" + car.getPricePerDay());
             addDetail(detailsPanel, "Availability:", car.getAvailability());
             specificationPanel.add(detailsPanel);
-            bookCarBtn.setEnabled(car.getAvailability().equals("Available"));
             specificationPanel.revalidate();
             specificationPanel.repaint();
         }
@@ -73,17 +71,17 @@ public class CarDetailsGUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == bookCarBtn) {
             BookCarGUI bookCarGUI = new BookCarGUI();
-            bookCarGUI.displayGUI(currentCarId);
+            bookCarGUI.displayGUI(currentLicensePlate);
             this.setVisible(false);
         } else if (e.getSource() == backBtn) {
             this.setVisible(false);
-            BrowseCarsGUI browseCarsGUI = new BrowseCarsGUI();
-            browseCarsGUI.setVisible(true);
+            SearchCarsGUI searchCarsGUI = new SearchCarsGUI();
+            searchCarsGUI.setVisible(true);
         }
     }
 
-    public void displayGUI(String carId) {
-        loadCarDetails(carId);
+    public void displayGUI(String licensePlate) {
+        loadCarDetails(licensePlate);
         this.setVisible(true);
     }
 }
