@@ -4,8 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.util.HashMap;
-import java.util.Map;
+
 import model.Car;
 import model.Booking;
 import controller.BookingDataController;
@@ -25,9 +24,11 @@ public class CarDataFileController {
 
         // manual sample data, DELETE LATER
         // Using adapted constructor to match your new Car model
-        cars.add(new Car("ABC123", "Toyota", "Camry", "Sedan", 25000.0, "Available", "ABC123"));
-        cars.add(new Car("XYZ789", "Honda", "Civic", "Sedan", 22000.0, "Available", "XYZ789"));
-        cars.add(new Car("DEF456", "Ford", "Mustang", "Sports", 35000.0, "Available", "DEF456"));
+
+
+        cars.add(new Car( "Toyota", "Camry", "Sedan", 25000.0, "Available", "ABC123"));
+        cars.add(new Car( "Honda", "Civic", "Sedan", 22000.0, "Available", "XYZ789"));
+        cars.add(new Car( "Ford", "Mustang", "Sports", 35000.0, "Available", "DEF456"));
 
         bookingRequests.add(new BookingRequest("John Doe", "ABC123", "05/10/2025", "05/15/2025"));
         bookingRequests.add(new BookingRequest("Jane Smith", "XYZ789", "05/12/2025", "05/14/2025"));
@@ -134,7 +135,9 @@ public class CarDataFileController {
     public boolean addCar(String carId, String make, String model, String type,
                          double pricePerDay, String availability, String licensePlate) {
         // Create a car with the current format
-        Car car = new Car(carId, make, model, type, pricePerDay, availability, licensePlate);
+
+        Car car = new Car( make, model, type,
+        pricePerDay,  availability, licensePlate);
         return addCar(car);
     }
 

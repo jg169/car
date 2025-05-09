@@ -125,8 +125,10 @@ public class ModifyCarGUI extends JFrame {
             return;
         }
 
-        Car car = new Car("1", make,  model,  type,
-               Double.parseDouble(price),  availability, licenseNum);
+
+
+        Car car = new Car( make, model, type,
+        Double.parseDouble(price),  availability, licenseNum);
 
         //
         boolean success = controller.updateCar(car);

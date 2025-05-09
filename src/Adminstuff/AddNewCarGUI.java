@@ -96,8 +96,8 @@ public class AddNewCarGUI extends JFrame {
         //make sure to go back and change PricePerDay in things
 
 
-        Car car = new Car("1", make,  model,  type,
-               Double.parseDouble(price),  availability, licenseNum);
+        Car car = new Car( make, model, type,
+        Double.parseDouble(price),  availability, licenseNum);
 
         //Car car = new Car(make, model, price, type, availability, licenseNum);
 

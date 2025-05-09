@@ -105,8 +105,4 @@ public class BookingDataController {
         return false;
     }
 
-    //use to get bookings
-    public List<Booking> getAllBookings() {
-        return bookings;
-    }
 }
