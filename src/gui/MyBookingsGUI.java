@@ -67,7 +67,8 @@ public class MyBookingsGUI extends JFrame implements ActionListener {
         bookingList = BookingDataController.getInstance().getAllBookings();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (Booking booking : bookingList) {
-            Car car = CarDataController.getInstance().getCarByLicensePlate(booking.getLicensePlate());
+            // Use BookingDataController instead of directly using CarDataController
+            Car car = BookingDataController.getInstance().getCarByLicensePlate(booking.getLicensePlate());
             String carName = "Unknown";
             if (car != null) {
                 carName = car.getMake() + " " + car.getModel();

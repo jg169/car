@@ -130,7 +130,7 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
         makeField.setText("");
         priceRangeSlider.setValue(200);
         typeComboBox.setSelectedIndex(0);
-        tableModel.setRowCount(0);
+        tableModel.setRowCount(0); // Clear the results table
     }
     
     @Override

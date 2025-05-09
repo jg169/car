@@ -1,6 +1,8 @@
 package gui;
 
 import javax.swing.*;
+
+import controller.BookingDataController;
 import controller.CarDataController;
 import model.Car;
 import java.awt.*;
@@ -43,7 +45,8 @@ public class CarDetailsGUI extends JFrame implements ActionListener {
 
     public void loadCarDetails(String licensePlate) {
         currentLicensePlate = licensePlate;
-        Car car = CarDataController.getInstance().getCarByLicensePlate(licensePlate);
+        // Use BookingDataController instead of directly using CarDataController
+        Car car = BookingDataController.getInstance().getCarByLicensePlate(licensePlate);
         if (car != null) {
             setTitle("Car Details - " + car.getMake() + " " + car.getModel());
             specificationPanel.removeAll();

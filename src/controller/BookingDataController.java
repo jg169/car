@@ -48,12 +48,11 @@ public class BookingDataController {
         }
     }
 
-    // Get all bookings
     public List<Booking> getAllBookings() {
         return bookings;
     }
 
-    // Get booking by booking ID
+    
     public Booking getBookingById(int bookingId) {
         for (Booking booking : bookings) {
             if (booking.getBookingId() == bookingId) {
@@ -63,10 +62,9 @@ public class BookingDataController {
         return null;
     }
 
-    // Create new booking
     public boolean createBooking(Booking booking) {
         booking.setBookingId(nextBookingId++);
-        if (!CarDataController.getInstance().checkAvailability(
+        if (!CarDataFileController.getInstance().checkAvailability(
                 booking.getLicensePlate(), booking.getStartDate(), booking.getEndDate())) {
             return false;
         }
@@ -75,13 +73,12 @@ public class BookingDataController {
         return true;
     }
 
-    // Update existing booking
     public boolean updateBooking(int bookingId, Booking updatedBooking) {
         for (int i = 0; i < bookings.size(); i++) {
             if (bookings.get(i).getBookingId() == bookingId) {
                 updatedBooking.setBookingId(bookingId);
                 // Check if the car is available
-                if (!CarDataController.getInstance().checkAvailability(
+                if (!CarDataFileController.getInstance().checkAvailability(
                         updatedBooking.getLicensePlate(),
                         updatedBooking.getStartDate(),
                         updatedBooking.getEndDate())) {
@@ -107,13 +104,23 @@ public class BookingDataController {
         }
         return false;
     }
-    public List<Car> getAllCars(){
-    	return Adminstuff.CarDataFileController.getInstance().getAllCars();
+    
+    public List<Car> getAllCars() {
+        return Adminstuff.CarDataFileController.getInstance().getAllCars();
     }
     
-    // Allows searching for cars based off of a particular filter like type, model, etc.
     public List<Car> getCarsByFilter(java.util.Map<String, Object> filter) {
         return Adminstuff.CarDataFileController.getInstance().getCarsByFilter(filter);
     }
+    
+    public Car getCarByLicensePlate(String licensePlate) {
+        return Adminstuff.CarDataFileController.getInstance().findCarByLicenseNum(licensePlate);
+    }
+    
+    public boolean checkAvailability(String licensePlate, Date startDate, Date endDate) {
+        return Adminstuff.CarDataFileController.getInstance().checkAvailability(licensePlate, startDate, endDate);
+    }
+    
+    
 
 }

@@ -138,7 +138,8 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
     public void loadBookingDetails(int bookingId) {
         currentBooking = BookingDataController.getInstance().getBookingById(bookingId);
         if (currentBooking != null) {
-            currentCar = CarDataController.getInstance().getCarByLicensePlate(currentBooking.getLicensePlate());
+            // Use BookingDataController instead of directly using CarDataController
+            currentCar = BookingDataController.getInstance().getCarByLicensePlate(currentBooking.getLicensePlate());
             if (currentCar != null) {
                 Component[] components = bookingPanel.getComponents();
                 ((JLabel)components[1]).setText(String.valueOf(currentBooking.getBookingId()));
