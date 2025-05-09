@@ -1,8 +1,11 @@
 package controller;
 
 import java.io.*;
+import Adminstuff.*;
 import java.util.*;
 import model.Booking;
+import model.Car;
+import Adminstuff.*;
 
 public class BookingDataController {
     private static BookingDataController instance;
@@ -103,6 +106,14 @@ public class BookingDataController {
             }
         }
         return false;
+    }
+    public List<Car> getAllCars(){
+    	return Adminstuff.CarDataFileController.getInstance().getAllCars();
+    }
+    
+    // Allows searching for cars based off of a particular filter like type, model, etc.
+    public List<Car> getCarsByFilter(java.util.Map<String, Object> filter) {
+        return Adminstuff.CarDataFileController.getInstance().getCarsByFilter(filter);
     }
 
 }

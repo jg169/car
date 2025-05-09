@@ -54,10 +54,8 @@ public class BrowseCarsGUI extends JFrame implements ActionListener {
     }
 
     public void loadAllCars() {
-        // Clear existing data
-        tableModel.setRowCount(0);
-        carList = CarDataController.getInstance().getAllCars();
-        for (Car car : carList) {
+    	carList = controller.BookingDataController.getInstance().getAllCars();
+    	for (Car car : carList) {
             Object[] row = {
                 car.getLicensePlate(),
                 car.getMake(),
@@ -67,7 +65,7 @@ public class BrowseCarsGUI extends JFrame implements ActionListener {
                 car.getAvailability()
             };
             tableModel.addRow(row);
-        }
+    	}
     }
 
     @Override
