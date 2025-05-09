@@ -3,7 +3,7 @@ package gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import controller.BookingDataController;
+import controller.RenterDataController;
 import controller.CarDataController;
 import model.Car;
 import java.awt.*;
@@ -50,7 +50,7 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
         centerPane.add(bottomPanel, BorderLayout.SOUTH);
         add(centerPane);
     }
-    
+
     private void setupSearchPanel() {
         JPanel searchPanel = new JPanel(new GridLayout(4, 2, 10, 10));
         // Make field
@@ -86,7 +86,7 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
         searchPanelContainer.add(searchPanel, BorderLayout.NORTH);
         centerPane.add(searchPanelContainer, BorderLayout.NORTH);
     }
-    
+
     private void setupResultsTable() {
         String[] columns = {"License Plate", "Make", "Model", "Type", "Price per Day", "Availability"};
         tableModel = new DefaultTableModel(columns, 0) {
@@ -101,7 +101,7 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
         resultsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         centerPane.add(scrollPane, BorderLayout.CENTER);
     }
-    
+
     public void searchCars(String make, int maxPrice, String type) {
         tableModel.setRowCount(0);
         Map<String, Object> filter = new HashMap<>();
@@ -112,7 +112,7 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
         if (!type.equals("Any")) {
             filter.put("type", type);
         }
-        List<Car> filteredCars = BookingDataController.getInstance().getCarsByFilter(filter);
+        List<Car> filteredCars = RenterDataController.getInstance().getCarsByFilter(filter);
         for (Car car : filteredCars) {
             Object[] row = {
                 car.getLicensePlate(),
@@ -125,14 +125,14 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
             tableModel.addRow(row);
         }
     }
-    
+
     public void resetFilters() {
         makeField.setText("");
         priceRangeSlider.setValue(200);
         typeComboBox.setSelectedIndex(0);
         tableModel.setRowCount(0); // Clear the results table
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == searchBtn) {
@@ -168,7 +168,7 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
             this.setVisible(false);
         }
     }
-    
+
     public void displayGUI() {
         this.setVisible(true);
     }

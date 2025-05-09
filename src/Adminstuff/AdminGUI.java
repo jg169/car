@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import model.Car;
 import model.Booking;
-import controller.BookingDataController;
+import controller.RenterDataController;
 
 public class AdminGUI extends JFrame {
     private JPanel contentPane;

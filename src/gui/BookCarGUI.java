@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import model.Car;
 import controller.CarDataController;
-import controller.BookingDataController;
+import controller.RenterDataController;
 import model.Booking;
 
 public class BookCarGUI extends JFrame implements ActionListener {
@@ -47,7 +47,7 @@ public class BookCarGUI extends JFrame implements ActionListener {
         centerPane.add(buttonPanel, BorderLayout.SOUTH);
         add(centerPane);
     }
-    
+
     private void setupBookingPanel() {
         bookingPanel = new JPanel(new GridLayout(0, 2, 10, 20));
         bookingPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -68,7 +68,7 @@ public class BookCarGUI extends JFrame implements ActionListener {
         totalCostLabel.setFont(new Font("Arial", Font.BOLD, 16));
         bookingPanel.add(totalCostLabel);
     }
-    
+
     private void setupDatePanels() {
         startDayCombo = new JComboBox<>(getDaysArray());
         startMonthCombo = new JComboBox<>(getMonthsArray());
@@ -105,7 +105,7 @@ public class BookCarGUI extends JFrame implements ActionListener {
         datePanel.add(yearCombo);
         return datePanel;
     }
-    
+
     // Helper methods just to create arrays for combo boxes for dates
     private Integer[] getDaysArray() {
         Integer[] days = new Integer[31];
@@ -114,7 +114,7 @@ public class BookCarGUI extends JFrame implements ActionListener {
         }
         return days;
     }
-    
+
     private Integer[] getMonthsArray() {
         Integer[] months = new Integer[12];
         for (int i = 0; i < 12; i++) {
@@ -122,7 +122,7 @@ public class BookCarGUI extends JFrame implements ActionListener {
         }
         return months;
     }
-    
+
     private Integer[] getYearsArray() {
         Integer[] years = new Integer[5];
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -131,11 +131,11 @@ public class BookCarGUI extends JFrame implements ActionListener {
         }
         return years;
     }
-    
-    
+
+
     public void displayGUI(String licensePlate) {
         currentLicensePlate = licensePlate;
-        currentCar = BookingDataController.getInstance().getCarByLicensePlate(licensePlate);
+        currentCar = RenterDataController.getInstance().getCarByLicensePlate(licensePlate);
         if (currentCar != null) {
             setTitle("Book a Car - " + currentCar.getMake() + " " + currentCar.getModel());
             Component[] components = bookingPanel.getComponents();
@@ -148,9 +148,9 @@ public class BookCarGUI extends JFrame implements ActionListener {
         }
         this.setVisible(true);
     }
-    
-    
-    
+
+
+
     public double calculateCost() {
         if (currentCar == null) {
             return 0.0;
@@ -172,7 +172,7 @@ public class BookCarGUI extends JFrame implements ActionListener {
         }
         return 0.0;
     }
-    
+
     private Date getStartDate() throws ParseException {
         Integer day = (Integer) startDayCombo.getSelectedItem();
         Integer month = (Integer) startMonthCombo.getSelectedItem();
@@ -190,8 +190,8 @@ public class BookCarGUI extends JFrame implements ActionListener {
         Date parsedDate = dateFormat.parse(dateStr);
         return parsedDate;
     }
-    
-    
+
+
     public void submitBooking() {
         if (currentCar == null) {
             return;
@@ -212,14 +212,14 @@ public class BookCarGUI extends JFrame implements ActionListener {
                 "Pending",
                 totalCost
             );
-            boolean success = BookingDataController.getInstance().createBooking(booking);
+            boolean success = RenterDataController.getInstance().createBooking(booking);
             if (success) {
                 JOptionPane.showMessageDialog(this, "Booking created successfully!");
                 MyBookingsGUI myBookingsGUI = new MyBookingsGUI();
                 myBookingsGUI.setVisible(true);
                 this.setVisible(false);
             } else {
-                JOptionPane.showMessageDialog(this, 
+                JOptionPane.showMessageDialog(this,
                     "Failed to create booking. The car is not available on the selected dates.");
             }
         } catch (ParseException e) {
@@ -228,11 +228,11 @@ public class BookCarGUI extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Error in date format: " + e.getMessage());
         }
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == startDayCombo || e.getSource() == startMonthCombo || 
-            e.getSource() == startYearCombo || e.getSource() == endDayCombo || 
+        if (e.getSource() == startDayCombo || e.getSource() == startMonthCombo ||
+            e.getSource() == startYearCombo || e.getSource() == endDayCombo ||
             e.getSource() == endMonthCombo || e.getSource() == endYearCombo) {
             calculateCost();
         } else if (e.getSource() == confirmBookingBtn) {

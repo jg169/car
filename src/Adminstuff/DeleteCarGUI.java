@@ -8,14 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 import model.Car;
 import model.Booking;
-import controller.BookingDataController;
+import controller.RenterDataController;
 
 public class DeleteCarGUI extends JFrame {
     private JPanel contentPane;
     private JTextField textFieldLicenseNum;
     private JButton btnDeleteCar;
     private JButton btnCancel;
-    private CarDataFileController controller;
+    private AdminDataController controller;
 
     public DeleteCarGUI() {
         setTitle("Delete Car");
@@ -24,7 +24,7 @@ public class DeleteCarGUI extends JFrame {
 
         setLocationRelativeTo(null);
 
-        controller = CarDataFileController.getInstance();
+        controller = AdminDataController.getInstance();
 
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());

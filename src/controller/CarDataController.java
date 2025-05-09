@@ -73,7 +73,7 @@ public class CarDataController {
                 match = false;
             }
             // availability filter
-            if (filter.containsKey("availability") && 
+            if (filter.containsKey("availability") &&
                     !car.getAvailability().equals(filter.get("availability"))) {
                 match = false;
             }
@@ -83,15 +83,15 @@ public class CarDataController {
         }
         return filteredCars;
     }
-    
+
     // Checks car availability for specific dates
     public boolean checkAvailability(String licensePlate, Date startDate, Date endDate) {
         Car car = getCarByLicensePlate(licensePlate);
         return car != null && car.getAvailability().equals("Available");
     }
-    
+
     public List<Booking> getBookingsForCar(String licensePlate) {
-        List<Booking> allBookings = BookingDataController.getInstance().getAllBookings();
+        List<Booking> allBookings = RenterDataController.getInstance().getAllBookings();
         List<Booking> carBookings = new ArrayList<>();
         for (Booking booking : allBookings) {
             if (booking.getLicensePlate().equals(licensePlate)) {
@@ -100,5 +100,5 @@ public class CarDataController {
         }
         return carBookings;
     }
-    
+
 }

@@ -11,7 +11,7 @@ import java.util.Date;
 import model.Car;
 import model.Booking;
 import controller.CarDataController;
-import controller.BookingDataController;
+import controller.RenterDataController;
 
 public class ModifyBookingGUI extends JFrame implements ActionListener {
     private JPanel centerPane;
@@ -24,9 +24,9 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
     private int currentBookingId;
     private Booking currentBooking;
     private Car currentCar;
-    
+
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    
+
     public ModifyBookingGUI() {
         setTitle("Modify Booking");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,7 +49,7 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
         centerPane.add(buttonPanel, BorderLayout.SOUTH);
         add(centerPane);
     }
-    
+
     private void setupBookingPanel() {
         bookingPanel = new JPanel(new GridLayout(0, 2, 10, 20));
         bookingPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -75,7 +75,7 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
         updatedCostLabel.setFont(new Font("Arial", Font.BOLD, 16));
         bookingPanel.add(updatedCostLabel);
     }
-    
+
     private void setupDatePanels() {
         startDayCombo = new JComboBox<>(getDaysArray());
         startMonthCombo = new JComboBox<>(getMonthsArray());
@@ -108,7 +108,7 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
         bookingPanel.add(new JLabel("End Date:"));
         bookingPanel.add(endDatePanel);
     }
-    
+
     // Helper methods to create arrays for combo boxes for dates
     private Integer[] getDaysArray() {
         Integer[] days = new Integer[31];
@@ -117,7 +117,7 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
         }
         return days;
     }
-    
+
     private Integer[] getMonthsArray() {
         Integer[] months = new Integer[12];
         for (int i = 0; i < 12; i++) {
@@ -125,7 +125,7 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
         }
         return months;
     }
-    
+
     private Integer[] getYearsArray() {
         Integer[] years = new Integer[5];
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -134,12 +134,12 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
         }
         return years;
     }
-    
+
     public void loadBookingDetails(int bookingId) {
-        currentBooking = BookingDataController.getInstance().getBookingById(bookingId);
+        currentBooking = RenterDataController.getInstance().getBookingById(bookingId);
         if (currentBooking != null) {
-            // Use BookingDataController instead of directly using CarDataController
-            currentCar = BookingDataController.getInstance().getCarByLicensePlate(currentBooking.getLicensePlate());
+            // Use RenterDataController instead of directly using CarDataController
+            currentCar = RenterDataController.getInstance().getCarByLicensePlate(currentBooking.getLicensePlate());
             if (currentCar != null) {
                 Component[] components = bookingPanel.getComponents();
                 ((JLabel)components[1]).setText(String.valueOf(currentBooking.getBookingId()));
@@ -168,28 +168,28 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
                 endYearCombo.setEnabled(canModify);
                 saveChangesBtn.setEnabled(canModify);
                 if (!canModify) {
-                    JOptionPane.showMessageDialog(this, 
+                    JOptionPane.showMessageDialog(this,
                         "This booking has been cancelled and cannot be modified.",
                         "Warning", JOptionPane.WARNING_MESSAGE);
                 }
             }
         }
     }
-    
+
     private Date getStartDate() throws ParseException {
         int day = (Integer) startDayCombo.getSelectedItem();
         int month = (Integer) startMonthCombo.getSelectedItem();
         int year = (Integer) startYearCombo.getSelectedItem();
         return dateFormat.parse(year + "-" + month + "-" + day);
     }
-    
+
     private Date getEndDate() throws ParseException {
         int day = (Integer) endDayCombo.getSelectedItem();
         int month = (Integer) endMonthCombo.getSelectedItem();
         int year = (Integer) endYearCombo.getSelectedItem();
         return dateFormat.parse(year + "-" + month + "-" + day);
     }
-    
+
     private void calculateUpdatedCost() {
         if (currentCar == null || currentBooking == null) {
             return;
@@ -204,9 +204,9 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
                 double totalCost = days * currentCar.getPricePerDay();
                 updatedCostLabel.setText("$" + totalCost);
                 if (totalCost != currentBooking.getTotalCost()) {
-                    updatedCostLabel.setText("$" + totalCost + 
-                        (totalCost > currentBooking.getTotalCost() ? 
-                        " (+" : " (") + 
+                    updatedCostLabel.setText("$" + totalCost +
+                        (totalCost > currentBooking.getTotalCost() ?
+                        " (+" : " (") +
                         "$" + Math.abs(totalCost - currentBooking.getTotalCost()) + ")");
                 }
             }
@@ -214,7 +214,7 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Error in date format: " + e.getMessage());
         }
     }
-    
+
     public void updateBooking() {
         if (currentCar == null || currentBooking == null) {
             return;
@@ -238,7 +238,7 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
                 currentBooking.getStatus(),
                 totalCost
             );
-            boolean success = BookingDataController.getInstance().updateBooking(
+            boolean success = RenterDataController.getInstance().updateBooking(
                 currentBooking.getBookingId(), updatedBooking);
             if (success) {
                 JOptionPane.showMessageDialog(this, "Booking updated successfully!");
@@ -246,7 +246,7 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
                 myBookingsGUI.setVisible(true);
                 this.setVisible(false);
             } else {
-                JOptionPane.showMessageDialog(this, 
+                JOptionPane.showMessageDialog(this,
                     "Failed to update booking. The car may not be available for the selected dates.",
                     "Update Failed", JOptionPane.ERROR_MESSAGE);
             }
@@ -254,11 +254,11 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Error in date format: " + e.getMessage());
         }
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == startDayCombo || e.getSource() == startMonthCombo || 
-            e.getSource() == startYearCombo || e.getSource() == endDayCombo || 
+        if (e.getSource() == startDayCombo || e.getSource() == startMonthCombo ||
+            e.getSource() == startYearCombo || e.getSource() == endDayCombo ||
             e.getSource() == endMonthCombo || e.getSource() == endYearCombo) {
             calculateUpdatedCost();
         } else if (e.getSource() == saveChangesBtn) {
@@ -270,7 +270,7 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
             this.setVisible(false);
         }
     }
-    
+
     public void displayGUI(int bookingId) {
         currentBookingId = bookingId;
         loadBookingDetails(bookingId);

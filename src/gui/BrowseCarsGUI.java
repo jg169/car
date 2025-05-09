@@ -54,7 +54,7 @@ public class BrowseCarsGUI extends JFrame implements ActionListener {
     }
 
     public void loadAllCars() {
-        carList = controller.BookingDataController.getInstance().getAllCars();
+        carList = controller.RenterDataController.getInstance().getAllCars();
         tableModel.setRowCount(0);
         for (Car car : carList) {
             Object[] row = {

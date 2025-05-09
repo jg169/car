@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import model.Car;
 import model.Booking;
-import controller.BookingDataController;
+import controller.RenterDataController;
 
 public class ViewRequestsGUI extends JFrame {
     private JPanel contentPane;
@@ -17,7 +17,7 @@ public class ViewRequestsGUI extends JFrame {
     private JButton btnAcceptRequestBooking;
     private JButton btnRejectRequestBooking;
     private JButton btnCancel;
-    private CarDataFileController controller;
+    private AdminDataController controller;
 
     public ViewRequestsGUI() {
         setTitle("View Booking Requests");
@@ -25,14 +25,14 @@ public class ViewRequestsGUI extends JFrame {
         setBounds(200, 200, 450, 300);
         setLocationRelativeTo(null);
 
-        controller = CarDataFileController.getInstance();
+        controller = AdminDataController.getInstance();
 
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
         setContentPane(contentPane);
 
         listModel = new DefaultListModel<>();
-        java.util.List<Booking> pendingRequests = CarDataFileController.getInstance().getPendingBookingRequests();
+        java.util.List<Booking> pendingRequests = AdminDataController.getInstance().getPendingBookingRequests();
         for (Booking request : pendingRequests) {
             listModel.addElement(request);
         }
@@ -97,7 +97,7 @@ public class ViewRequestsGUI extends JFrame {
 
     private void refreshBookingsList() {
         listModel.clear();
-        java.util.List<Booking> pendingRequests = CarDataFileController.getInstance().getPendingBookingRequests();
+        java.util.List<Booking> pendingRequests = AdminDataController.getInstance().getPendingBookingRequests();
         for (Booking request : pendingRequests) {
             listModel.addElement(request);
         }

@@ -7,20 +7,20 @@ import model.Booking;
 import model.Car;
 import Adminstuff.*;
 
-public class BookingDataController {
-    private static BookingDataController instance;
+public class RenterDataController {
+    private static RenterDataController instance;
     private List<Booking> bookings;
     private static final String BOOKING_FILE = "bookings.dat";
     private int nextBookingId = 1;
 
-    private BookingDataController() {
+    private RenterDataController() {
         bookings = new ArrayList<>();
         loadBookings();
     }
 
-    public static BookingDataController getInstance() {
+    public static RenterDataController getInstance() {
         if (instance == null) {
-            instance = new BookingDataController();
+            instance = new RenterDataController();
         }
         return instance;
     }
@@ -52,7 +52,7 @@ public class BookingDataController {
         return bookings;
     }
 
-    
+
     public Booking getBookingById(int bookingId) {
         for (Booking booking : bookings) {
             if (booking.getBookingId() == bookingId) {
@@ -64,7 +64,7 @@ public class BookingDataController {
 
     public boolean createBooking(Booking booking) {
         booking.setBookingId(nextBookingId++);
-        if (!CarDataFileController.getInstance().checkAvailability(
+        if (!AdminDataController.getInstance().checkAvailability(
                 booking.getLicensePlate(), booking.getStartDate(), booking.getEndDate())) {
             return false;
         }
@@ -78,7 +78,7 @@ public class BookingDataController {
             if (bookings.get(i).getBookingId() == bookingId) {
                 updatedBooking.setBookingId(bookingId);
                 // Check if the car is available
-                if (!CarDataFileController.getInstance().checkAvailability(
+                if (!AdminDataController.getInstance().checkAvailability(
                         updatedBooking.getLicensePlate(),
                         updatedBooking.getStartDate(),
                         updatedBooking.getEndDate())) {
@@ -104,23 +104,23 @@ public class BookingDataController {
         }
         return false;
     }
-    
+
     public List<Car> getAllCars() {
-        return Adminstuff.CarDataFileController.getInstance().getAllCars();
+        return Adminstuff.AdminDataController.getInstance().getAllCars();
     }
-    
+
     public List<Car> getCarsByFilter(java.util.Map<String, Object> filter) {
-        return Adminstuff.CarDataFileController.getInstance().getCarsByFilter(filter);
+        return Adminstuff.AdminDataController.getInstance().getCarsByFilter(filter);
     }
-    
+
     public Car getCarByLicensePlate(String licensePlate) {
-        return Adminstuff.CarDataFileController.getInstance().findCarByLicenseNum(licensePlate);
+        return Adminstuff.AdminDataController.getInstance().findCarByLicenseNum(licensePlate);
     }
-    
+
     public boolean checkAvailability(String licensePlate, Date startDate, Date endDate) {
-        return Adminstuff.CarDataFileController.getInstance().checkAvailability(licensePlate, startDate, endDate);
+        return Adminstuff.AdminDataController.getInstance().checkAvailability(licensePlate, startDate, endDate);
     }
-    
-    
+
+
 
 }

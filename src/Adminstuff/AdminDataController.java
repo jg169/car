@@ -7,20 +7,20 @@ import java.util.*;
 
 import model.Car;
 import model.Booking;
-import controller.BookingDataController;
+import controller.RenterDataController;
 
-// CarDataFileController, is Singleton pattern
-// Modify the CarDataFileController class to work with the new Car model
+// AdminDataController, is Singleton pattern
+// Modify the AdminDataController class to work with the new Car model
 
-public class CarDataFileController {
-    private static CarDataFileController instance;
+public class AdminDataController {
+    private static AdminDataController instance;
     private ArrayList<Car> cars;
-    private ArrayList<BookingRequest> bookingRequests;
+
 
     // Private constructor for singleton
-    private CarDataFileController() {
+    private AdminDataController() {
         cars = new ArrayList<>();
-        bookingRequests = new ArrayList<>();
+
 
         // manual sample data, DELETE LATER
         // Using adapted constructor to match your new Car model
@@ -30,9 +30,6 @@ public class CarDataFileController {
         cars.add(new Car( "Honda", "Civic", "Sedan", 22000.0, "Available", "XYZ789"));
         cars.add(new Car( "Ford", "Mustang", "Sports", 35000.0, "Available", "DEF456"));
 
-        bookingRequests.add(new BookingRequest("John Doe", "ABC123", "05/10/2025", "05/15/2025"));
-        bookingRequests.add(new BookingRequest("Jane Smith", "XYZ789", "05/12/2025", "05/14/2025"));
-        bookingRequests.add(new BookingRequest("Bob Johnson", "DEF456", "05/20/2025", "05/25/2025"));
     }
 
 
@@ -50,9 +47,9 @@ public class CarDataFileController {
     }
 
     // get singleton instance
-    public static CarDataFileController getInstance() {
+    public static AdminDataController getInstance() {
         if (instance == null) {
-            instance = new CarDataFileController();
+            instance = new AdminDataController();
         }
         return instance;
     }
@@ -108,7 +105,7 @@ public class CarDataFileController {
 
     /*
     public java.util.List<Booking> getBookingsForCar(String licensePlate) {
-        List<Booking> allBookings = BookingDataController.getInstance().getAllBookings();
+        List<Booking> allBookings = RenterDataController.getInstance().getAllBookings();
         List<Booking> carBookings = new ArrayList<>();
        for (Booking booking : allBookings) {
         if (booking.getLicensePlate().equals(licensePlate)) {
@@ -131,15 +128,6 @@ public class CarDataFileController {
         return true;
     }
 
-    // Overloaded method to add a car using the new Car model format
-    public boolean addCar(String carId, String make, String model, String type,
-                         double pricePerDay, String availability, String licensePlate) {
-        // Create a car with the current format
-
-        Car car = new Car( make, model, type,
-        pricePerDay,  availability, licensePlate);
-        return addCar(car);
-    }
 
     public Car findCarByLicenseNum(String licenseNum) {
         for (Car car : cars) {
@@ -172,13 +160,13 @@ public class CarDataFileController {
 
     public java.util.List <Booking> getPendingBookingRequests() {
 
-        return BookingDataController.getInstance().getAllBookings();
+        return RenterDataController.getInstance().getAllBookings();
     }
 
     public boolean acceptBookingRequest(int index) {
         java.util.List<Booking> pendingRequests = getPendingBookingRequests();
         if (index >= 0 && index < pendingRequests.size()) {
-            //pendingRequests.get(index).accept();
+            pendingRequests.get(index).setStatus("Accepted");
             return true;
         }
         return false;
@@ -187,7 +175,8 @@ public class CarDataFileController {
     public boolean rejectBookingRequest(int index) {
         java.util.List<Booking> pendingRequests = getPendingBookingRequests();
         if (index >= 0 && index < pendingRequests.size()) {
-            //pendingRequests.get(index).reject();
+            pendingRequests.get(index).setStatus("Rejected");
+
             return true;
         }
         return false;

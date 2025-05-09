@@ -2,7 +2,7 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import controller.BookingDataController;
+import controller.RenterDataController;
 import controller.CarDataController;
 import model.Booking;
 import model.Car;
@@ -20,7 +20,7 @@ public class MyBookingsGUI extends JFrame implements ActionListener {
     private JButton backBtn;
     private DefaultTableModel tableModel;
     private List<Booking> bookingList;
-    
+
     public MyBookingsGUI() {
         setTitle("My Bookings");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,7 +46,7 @@ public class MyBookingsGUI extends JFrame implements ActionListener {
         add(centerPane);
         loadAllBookings();
     }
-    
+
     private void setupTable() {
         String[] columns = {"Booking ID", "Car", "Start Date", "End Date", "Total Cost", "Status"};
         tableModel = new DefaultTableModel(columns, 0) {
@@ -61,14 +61,14 @@ public class MyBookingsGUI extends JFrame implements ActionListener {
         bookingsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         centerPane.add(scrollPane, BorderLayout.CENTER);
     }
-    
+
     public void loadAllBookings() {
         tableModel.setRowCount(0);
-        bookingList = BookingDataController.getInstance().getAllBookings();
+        bookingList = RenterDataController.getInstance().getAllBookings();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (Booking booking : bookingList) {
-            // Use BookingDataController instead of directly using CarDataController
-            Car car = BookingDataController.getInstance().getCarByLicensePlate(booking.getLicensePlate());
+            // Use RenterDataController instead of directly using CarDataController
+            Car car = RenterDataController.getInstance().getCarByLicensePlate(booking.getLicensePlate());
             String carName = "Unknown";
             if (car != null) {
                 carName = car.getMake() + " " + car.getModel();
@@ -84,7 +84,7 @@ public class MyBookingsGUI extends JFrame implements ActionListener {
             tableModel.addRow(row);
         }
     }
-    
+
     public void cancelBooking(int bookingId) {
         int confirm = JOptionPane.showConfirmDialog(
             this,
@@ -93,14 +93,14 @@ public class MyBookingsGUI extends JFrame implements ActionListener {
             JOptionPane.YES_NO_OPTION
         );
         if (confirm == JOptionPane.YES_OPTION) {
-            boolean success = BookingDataController.getInstance().cancelBooking(bookingId);
+            boolean success = RenterDataController.getInstance().cancelBooking(bookingId);
             if (success) {
                 JOptionPane.showMessageDialog(this, "Booking cancelled successfully!");
                 loadAllBookings();
             }
         }
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         int selectedRow = bookingsTable.getSelectedRow();
@@ -126,7 +126,7 @@ public class MyBookingsGUI extends JFrame implements ActionListener {
             this.setVisible(false);
         }
     }
-    
+
     public void displayGUI() {
         this.setVisible(true);
     }
