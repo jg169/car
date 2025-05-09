@@ -1,8 +1,5 @@
 package Adminstuff;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
 
 import model.Car;
@@ -26,9 +23,9 @@ public class AdminDataController {
         // Using adapted constructor to match your new Car model
 
 
-        cars.add(new Car( "Toyota", "Camry", "Sedan", 200.0, "Available", "ABC123"));
-        cars.add(new Car( "Honda", "Civic", "Sedan", 220.0, "Available", "XYZ789"));
-        cars.add(new Car( "Ford", "Mustang", "Sports", 350.0, "Available", "DEF456"));
+        cars.add(new Car("Toyota", "Camry", "Sedan", 200.0, "Available", "ABC123", "camry.jpg"));
+        cars.add(new Car("Honda", "Civic", "Sedan", 220.0, "Available", "XYZ789", "civic.jpg"));
+        cars.add(new Car("Ford", "Mustang", "Sports", 350.0, "Available", "DEF456", "mustang.jpg"));
 
     }
 
@@ -43,6 +40,7 @@ public class AdminDataController {
         details.put("pricePerDay", car.getPricePerDay());
         details.put("availability", car.getAvailability());
         details.put("licensePlate", car.getLicensePlate());
+        details.put("imageFile", car.getImageFile());
         return details;
     }
 

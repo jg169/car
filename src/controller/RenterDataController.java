@@ -5,7 +5,6 @@ import Adminstuff.*;
 import java.util.*;
 import model.Booking;
 import model.Car;
-import Adminstuff.*;
 
 public class RenterDataController {
     private static RenterDataController instance;
