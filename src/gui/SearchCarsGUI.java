@@ -2,6 +2,8 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import controller.BookingDataController;
 import controller.CarDataController;
 import model.Car;
 import java.awt.*;
@@ -110,7 +112,7 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
         if (!type.equals("Any")) {
             filter.put("type", type);
         }
-        List<Car> filteredCars = CarDataController.getInstance().getCarsByFilter(filter);
+        List<Car> filteredCars = BookingDataController.getInstance().getCarsByFilter(filter);
         for (Car car : filteredCars) {
             Object[] row = {
                 car.getLicensePlate(),
