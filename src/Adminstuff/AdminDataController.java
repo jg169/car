@@ -22,13 +22,13 @@ public class AdminDataController {
         cars = new ArrayList<>();
 
 
-        // manual sample data, DELETE LATER
+        // Some pre-made cars
         // Using adapted constructor to match your new Car model
 
 
-        cars.add(new Car( "Toyota", "Camry", "Sedan", 25000.0, "Available", "ABC123"));
-        cars.add(new Car( "Honda", "Civic", "Sedan", 22000.0, "Available", "XYZ789"));
-        cars.add(new Car( "Ford", "Mustang", "Sports", 35000.0, "Available", "DEF456"));
+        cars.add(new Car( "Toyota", "Camry", "Sedan", 200.0, "Available", "ABC123"));
+        cars.add(new Car( "Honda", "Civic", "Sedan", 220.0, "Available", "XYZ789"));
+        cars.add(new Car( "Ford", "Mustang", "Sports", 350.0, "Available", "DEF456"));
 
     }
 
