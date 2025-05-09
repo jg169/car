@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import Adminstuff.*;
 
 public class HomeGUI extends JFrame implements ActionListener {
     private JPanel centerPane;
@@ -44,7 +45,9 @@ public class HomeGUI extends JFrame implements ActionListener {
     }
 
     public void showAdminContent() {
-        JOptionPane.showMessageDialog(this, "Admin login here");
+        AdminGUI adminGUI = new AdminGUI();
+        adminGUI.setVisible(true);
+        this.setVisible(false);
     }
 
     public void showRenterGUI() {

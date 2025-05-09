@@ -90,8 +90,8 @@ public class BookingDataController {
                 updatedBooking.setBookingId(bookingId);
                 // Check if the car is available
                 if (!CarDataController.getInstance().checkAvailability(
-                        updatedBooking.getCarId(), 
-                        updatedBooking.getStartDate(), 
+                        updatedBooking.getCarId(),
+                        updatedBooking.getStartDate(),
                         updatedBooking.getEndDate())) {
                     return false;
                 }
@@ -115,5 +115,10 @@ public class BookingDataController {
             }
         }
         return false;
+    }
+
+    //use to get bookings
+    public List<Booking> getAllBookings() {
+        return bookings;
     }
 }

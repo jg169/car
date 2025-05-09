@@ -13,7 +13,7 @@ public class CarDetailsGUI extends JFrame implements ActionListener {
     private JButton bookCarBtn;
     private JButton backBtn;
     private String currentCarId;
-    
+
     public CarDetailsGUI() {
         setTitle("Car Details");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,7 +40,7 @@ public class CarDetailsGUI extends JFrame implements ActionListener {
         centerPane.add(buttonPanel, BorderLayout.SOUTH);
         add(centerPane);
     }
-    
+
     public void loadCarDetails(String carId) {
         currentCarId = carId;
         Car car = CarDataController.getInstance().getCarById(carId);
@@ -61,14 +61,14 @@ public class CarDetailsGUI extends JFrame implements ActionListener {
             specificationPanel.repaint();
         }
     }
-    
+
     private void addDetail(JPanel panel, String label, String value) {
         JLabel labelComponent = new JLabel(label);
         JLabel valueComponent = new JLabel(value);
         panel.add(labelComponent);
         panel.add(valueComponent);
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == bookCarBtn) {
@@ -81,7 +81,7 @@ public class CarDetailsGUI extends JFrame implements ActionListener {
             browseCarsGUI.setVisible(true);
         }
     }
-    
+
     public void displayGUI(String carId) {
         loadCarDetails(carId);
         this.setVisible(true);
