@@ -2,7 +2,6 @@ package controller;
 
 import java.io.*;
 import java.util.*;
-
 import model.Booking;
 
 public class BookingDataController {
@@ -11,13 +10,11 @@ public class BookingDataController {
     private static final String BOOKING_FILE = "bookings.dat";
     private int nextBookingId = 1;
 
-    // singleton pattern
     private BookingDataController() {
         bookings = new ArrayList<>();
         loadBookings();
     }
 
-    // Singleton getInstance method
     public static BookingDataController getInstance() {
         if (instance == null) {
             instance = new BookingDataController();
@@ -25,7 +22,6 @@ public class BookingDataController {
         return instance;
     }
 
-    // Load the bookings from file
     private void loadBookings() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(BOOKING_FILE))) {
             bookings = (List<Booking>) ois.readObject();
@@ -41,7 +37,6 @@ public class BookingDataController {
         }
     }
 
-    // Save bookings
     private void saveBookings() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(BOOKING_FILE))) {
             oos.writeObject(bookings);
@@ -50,15 +45,9 @@ public class BookingDataController {
         }
     }
 
-    // bookings based off of user ID
-    public List<Booking> getBookingsByUser(String userId) {
-        List<Booking> userBookings = new ArrayList<>();
-        for (Booking booking : bookings) {
-            if (booking.getUserId().equals(userId)) {
-                userBookings.add(booking);
-            }
-        }
-        return userBookings;
+    // Get all bookings
+    public List<Booking> getAllBookings() {
+        return bookings;
     }
 
     // Get booking by booking ID
@@ -75,7 +64,7 @@ public class BookingDataController {
     public boolean createBooking(Booking booking) {
         booking.setBookingId(nextBookingId++);
         if (!CarDataController.getInstance().checkAvailability(
-                booking.getCarId(), booking.getStartDate(), booking.getEndDate())) {
+                booking.getLicensePlate(), booking.getStartDate(), booking.getEndDate())) {
             return false;
         }
         bookings.add(booking);
@@ -90,7 +79,7 @@ public class BookingDataController {
                 updatedBooking.setBookingId(bookingId);
                 // Check if the car is available
                 if (!CarDataController.getInstance().checkAvailability(
-                        updatedBooking.getCarId(), 
+                        updatedBooking.getLicensePlate(), 
                         updatedBooking.getStartDate(), 
                         updatedBooking.getEndDate())) {
                     return false;
@@ -100,7 +89,6 @@ public class BookingDataController {
                 return true;
             }
         }
-        // if booking not found
         return false;
     }
 

@@ -2,10 +2,8 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
 import controller.CarDataController;
 import model.Car;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +19,7 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
     private JButton searchBtn;
     private JButton resetBtn;
     private JButton backBtn;
+    private JButton bookCarBtn;
     private JButton viewDetailsBtn;
     private JTable resultsTable;
     private DefaultTableModel tableModel;
@@ -30,16 +29,34 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 600);
         setLocationRelativeTo(null);
-        centerPane = new JPanel();
-        centerPane.setLayout(new BorderLayout(10, 10));
+        centerPane = new JPanel(new BorderLayout(10, 10));
         centerPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JLabel titleLabel = new JLabel("Search Cars", JLabel.CENTER);
         centerPane.add(titleLabel, BorderLayout.NORTH);
+        setupSearchPanel();
+        setupResultsTable();
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        viewDetailsBtn = new JButton("View Details");
+        bookCarBtn = new JButton("Book Selected Car");
+        backBtn = new JButton("Back");
+        viewDetailsBtn.addActionListener(this);
+        bookCarBtn.addActionListener(this);
+        backBtn.addActionListener(this);
+        bottomPanel.add(viewDetailsBtn);
+        bottomPanel.add(bookCarBtn);
+        bottomPanel.add(backBtn);
+        centerPane.add(bottomPanel, BorderLayout.SOUTH);
+        add(centerPane);
+    }
+    
+    private void setupSearchPanel() {
         JPanel searchPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        // Make field
         JLabel makeLabel = new JLabel("Make:");
         makeField = new JTextField(20);
         searchPanel.add(makeLabel);
         searchPanel.add(makeField);
+        // Price slider
         JLabel priceLabel = new JLabel("Max Price per Day:");
         priceRangeSlider = new JSlider(JSlider.HORIZONTAL, 50, 500, 200);
         priceRangeSlider.setMajorTickSpacing(50);
@@ -47,13 +64,12 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
         priceRangeSlider.setPaintLabels(true);
         searchPanel.add(priceLabel);
         searchPanel.add(priceRangeSlider);
-        // Car type dropdown
+        // Car type dropdown menu
         JLabel typeLabel = new JLabel("Car Type:");
         String[] carTypes = {"Any", "Sedan", "SUV", "Hatchback", "Convertible", "Truck"};
         typeComboBox = new JComboBox<>(carTypes);
         searchPanel.add(typeLabel);
         searchPanel.add(typeComboBox);
-        // Search button
         searchBtn = new JButton("Search");
         resetBtn = new JButton("Reset Filters");
         JPanel buttonSubPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -66,8 +82,11 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
         JPanel searchPanelContainer = new JPanel(new BorderLayout());
         searchPanelContainer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         searchPanelContainer.add(searchPanel, BorderLayout.NORTH);
-        // Create results table
-        String[] columns = {"Car ID", "Make", "Model", "Type", "Price per Day", "Availability"};
+        centerPane.add(searchPanelContainer, BorderLayout.NORTH);
+    }
+    
+    private void setupResultsTable() {
+        String[] columns = {"License Plate", "Make", "Model", "Type", "Price per Day", "Availability"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -78,17 +97,7 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
         JScrollPane scrollPane = new JScrollPane(resultsTable);
         resultsTable.setFillsViewportHeight(true);
         resultsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        viewDetailsBtn = new JButton("View Details");
-        backBtn = new JButton("Back");
-        viewDetailsBtn.addActionListener(this);
-        backBtn.addActionListener(this);
-        bottomPanel.add(viewDetailsBtn);
-        bottomPanel.add(backBtn);
-        centerPane.add(searchPanelContainer, BorderLayout.NORTH);
         centerPane.add(scrollPane, BorderLayout.CENTER);
-        centerPane.add(bottomPanel, BorderLayout.SOUTH);
-        add(centerPane);
     }
     
     public void searchCars(String make, int maxPrice, String type) {
@@ -104,7 +113,7 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
         List<Car> filteredCars = CarDataController.getInstance().getCarsByFilter(filter);
         for (Car car : filteredCars) {
             Object[] row = {
-                car.getCarId(),
+                car.getLicensePlate(),
                 car.getMake(),
                 car.getModel(),
                 car.getType(),
@@ -134,9 +143,19 @@ public class SearchCarsGUI extends JFrame implements ActionListener {
         } else if (e.getSource() == viewDetailsBtn) {
             int selectedRow = resultsTable.getSelectedRow();
             if (selectedRow != -1) {
-                String carId = (String) tableModel.getValueAt(selectedRow, 0);
+                String licensePlate = (String) tableModel.getValueAt(selectedRow, 0);
                 CarDetailsGUI detailsGUI = new CarDetailsGUI();
-                detailsGUI.displayGUI(carId);
+                detailsGUI.displayGUI(licensePlate);
+                this.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "Please select a car first");
+            }
+        } else if (e.getSource() == bookCarBtn) {
+            int selectedRow = resultsTable.getSelectedRow();
+            if (selectedRow != -1) {
+                String licensePlate = (String) tableModel.getValueAt(selectedRow, 0);
+                BookCarGUI bookCarGUI = new BookCarGUI();
+                bookCarGUI.displayGUI(licensePlate);
                 this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(this, "Select a car first");
