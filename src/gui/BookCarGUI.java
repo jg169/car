@@ -219,7 +219,7 @@ public class BookCarGUI extends JFrame implements ActionListener {
                 this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(this,
-                    "Failed to create booking. The car is not available on the selected dates.");
+                    "Failed to create booking. The car is not available for rental at this time.");
             }
         } catch (ParseException e) {
             System.out.println("Parse exception: " + e.getMessage());
