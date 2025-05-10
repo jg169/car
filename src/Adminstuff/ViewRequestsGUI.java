@@ -2,13 +2,7 @@ package Adminstuff;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.util.HashMap;
-import java.util.Map;
-import model.Car;
 import model.Booking;
-import controller.RenterDataController;
 
 public class ViewRequestsGUI extends JFrame {
     private JPanel contentPane;

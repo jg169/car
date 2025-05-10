@@ -10,7 +10,6 @@ import java.util.Calendar;
 import java.util.Date;
 import model.Car;
 import model.Booking;
-//import controller.CarDataController;
 import controller.RenterDataController;
 
 public class ModifyBookingGUI extends JFrame implements ActionListener {
