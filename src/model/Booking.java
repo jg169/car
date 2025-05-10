@@ -1,5 +1,6 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Booking {
@@ -35,5 +36,11 @@ public class Booking {
     public void setStatus(String status) { this.status = status; }
     public double getTotalCost() { return totalCost; }
     public void setTotalCost(double totalCost) { this.totalCost = totalCost; }
+    
+    // To String
+    public String toString() {
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    	return licensePlate + "  |  " + sdf.format(startDate)+ "  |  " + sdf.format(endDate) + "  |  " + String.valueOf(totalCost) + "  |  " + status;
+    }
 
 }
