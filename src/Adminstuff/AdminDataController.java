@@ -164,8 +164,10 @@ public class AdminDataController {
     public boolean acceptBookingRequest(int index) {
         java.util.List<Booking> pendingRequests = getPendingBookingRequests();
         if (index >= 0 && index < pendingRequests.size()) {
-            pendingRequests.get(index).setStatus("Accepted");
-            return true;
+        	if(!pendingRequests.get(index).getStatus().equals("Cancelled")) {
+	            pendingRequests.get(index).setStatus("Accepted");
+	            return true;
+        	}
         }
         return false;
     }
@@ -173,9 +175,10 @@ public class AdminDataController {
     public boolean rejectBookingRequest(int index) {
         java.util.List<Booking> pendingRequests = getPendingBookingRequests();
         if (index >= 0 && index < pendingRequests.size()) {
-            pendingRequests.get(index).setStatus("Rejected");
-
-            return true;
+        	if(!pendingRequests.get(index).getStatus().equals("Cancelled")) {
+	            pendingRequests.get(index).setStatus("Rejected");
+	            return true;
+        	}
         }
         return false;
     }
