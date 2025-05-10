@@ -234,7 +234,7 @@ public class ModifyBookingGUI extends JFrame implements ActionListener {
                 currentBooking.getLicensePlate(),
                 startDate,
                 endDate,
-                currentBooking.getStatus(),
+                "Pending",
                 totalCost
             );
             boolean success = RenterDataController.getInstance().updateBooking(
